@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -23,6 +25,7 @@ import java.util.List;
  */
 @RestController
 public class Adsmanage {
+
     @Autowired
     private AdsRepository adsRepository;
 
@@ -41,33 +44,25 @@ public class Adsmanage {
     }
 
     /**
-     * 注册
+     * 公告
      *
      * @return
      */
     @RequestMapping(value = "/api/ads/add", method = RequestMethod.POST)
-    public Response add(@RequestParam String id, @RequestParam String tips1, @RequestParam String tips2, @RequestParam String tips3, @RequestParam String img1, @RequestParam String img2, @RequestParam String img3) {
+    public Response add(@RequestParam String id, @RequestParam String tips, @RequestParam String img) {
 
         System.out.println(id);
         Ads ads ;
         if (id .equals("")) {
             ads = new Ads();
-            ads.setImg1(img1);
-            ads.setImg2(img2);
-            ads.setImg3(img3);
-            ads.setTips1(tips1);
-            ads.setTips2(tips2);
-            ads.setTips3(tips3);
+            ads.setTips(tips);
+            ads.setImg(img);
             adsRepository.save(ads);
 
         } else {
             ads = adsRepository.findById(Long.parseLong(id));
-            ads.setImg1(img1);
-            ads.setImg2(img2);
-            ads.setImg3(img3);
-            ads.setTips1(tips1);
-            ads.setTips2(tips2);
-            ads.setTips3(tips3);
+            ads.setImg(img);
+            ads.setTips(tips);
             adsRepository.save(ads);
         }
         Response response = new Response();
@@ -88,6 +83,38 @@ public class Adsmanage {
         response.setCode(200);
         response.setMsg(getIpAddress());
         response.setT(adsRepository.findAll());
+        return response;
+    }
+    @RequestMapping(value = "/api/sys/backupDb", method = RequestMethod.GET)
+    public Response backupDb() throws IOException, InterruptedException {
+        String pathSql = "C:\\bookmall\\data\\";
+        File filePath = new File(pathSql);
+        //创建备份sql文件
+        if (!filePath.exists()){
+            filePath.mkdirs();
+        }
+        File dbFile=new File(filePath,"book.sql");
+        if(!dbFile.exists()){
+            dbFile.createNewFile();
+        }
+        //mysqldump -hlocalhost -uroot -p123456 db > /home/back.sql
+        StringBuffer sb = new StringBuffer();
+        sb.append("mysqldump");
+        sb.append(" -u"+"root");
+        sb.append(" -p"+"password");
+        sb.append(" "+"bookmall"+" > ");
+        sb.append(filePath);
+        System.out.println("cmd命令为："+sb.toString());
+       // Runtime runtime = Runtime.getRuntime();
+        System.out.println("开始备份：bookmall");
+        Process process = Runtime.getRuntime().exec(new String[] { "cmd", "/c", "mysqldump -uroot  -ppassword bookmall > F:\\backup.sql" }); // windows
+        System.out.println( process.waitFor());
+       // Process process = runtime.exec("cmd /c mysqldump -uroot  -ppassword bookmall > F:backup.sql");
+        System.out.println("备份成功!");
+        Response response = new Response();
+        response.setCode(200);
+        response.setMsg("备份成功，备份数据存储在C:\\bookmall\\data\\book.sql");
+        response.setT(null);
         return response;
     }
 
