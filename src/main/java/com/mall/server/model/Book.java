@@ -17,6 +17,8 @@ public class Book {
     private String description;
     private String imgurl;
 
+    private String author;
+    private String publish;
     public long getId() {
         return id;
     }
@@ -71,5 +73,21 @@ public class Book {
 
     public void setImgurl(String imgurl) {
         this.imgurl = imgurl;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getPublish() {
+        return publish;
+    }
+
+    public void setPublish(String publish) {
+        this.publish = publish;
     }
 }

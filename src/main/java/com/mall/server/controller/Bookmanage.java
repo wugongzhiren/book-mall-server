@@ -27,7 +27,7 @@ public class Bookmanage {
      */
     @RequestMapping(value = "/api/goods/add", method = RequestMethod.POST)
     public Response add(@RequestParam String id, @RequestParam String flag, @RequestParam String name, @RequestParam String type, @RequestParam String imgUrl, @RequestParam String description
-            , @RequestParam String stock, @RequestParam String unitPrice) {
+            , @RequestParam String stock, @RequestParam String unitPrice, @RequestParam String author, @RequestParam String publish) {
         System.out.println("description:" + description);
         Response response = new Response();
         if (flag.equals("A")) {
@@ -44,6 +44,8 @@ public class Bookmanage {
                 book.setImgurl(imgUrl);
                 book.setStock(stock);
                 book.setUnitPrice(unitPrice);
+                book.setAuthor(author);
+                book.setPublish(publish);
                 bookRepository.save(book);
                 response.setCode(200);
                 response.setMsg("");
@@ -58,6 +60,8 @@ public class Bookmanage {
                 book1.setImgurl(imgUrl);
                 book1.setStock(stock);
                 book1.setUnitPrice(unitPrice);
+                book1.setAuthor(author);
+                book1.setPublish(publish);
                 bookRepository.save(book1);
                 response.setCode(200);
                 response.setMsg("");
@@ -79,13 +83,13 @@ public class Bookmanage {
 
     @RequestMapping(value = "/api/goods/getOne", method = RequestMethod.GET)
     public Response getOne(@RequestParam String id) {
-        // Goods goods = goodsRepository.findById(Long.parseLong(id));
+        Book book = bookRepository.findById(Long.parseLong(id));
         Response response = new Response();
-        /*if(goods!=null){
+        if (book != null) {
             response.setCode(200);
             response.setMsg("");
-            response.setT(goods);
-        }*/
+            response.setT(book);
+        }
         return response;
     }
 
@@ -108,28 +112,52 @@ public class Bookmanage {
 
     @RequestMapping(value = "/api/goods/getByKeyWord", method = RequestMethod.GET)
     public Response getGoodsByKey(@RequestParam String keyword) {
-       /* List<Goods> goods;
+        List<Book> books;
+        List<Book> books1;
+        List<Book> books2;
         System.out.println(keyword);
-        goods=goodsRepository.findByGoodsnameLike("%"+keyword+"%");
+        books = bookRepository.findByNameLike("%" + keyword + "%");
+        books1 = bookRepository.findByAuthorLike("%" + keyword + "%");
+        if (keyword.equals("国学")) {
+            keyword = "1";
+        }
+        if (keyword.equals("教辅")) {
+            keyword = "2";
+        }
+        if (keyword.equals("专业类")) {
+            keyword = "3";
+        }
+        if (keyword.equals("小说")) {
+            keyword = "4";
+        }
+        if (keyword.equals("计算机")) {
+            keyword = "5";
+        }
+        if (keyword.equals("漫画")) {
+            keyword = "6";
+        }
+        books2 = bookRepository.findByType(keyword);
+        books.addAll(books1);
+        books.addAll(books2);
         Response response = new Response();
-        if(goods!=null){
-            response.setCode(200);
-            response.setMsg("");
-            response.setT(goods);
-        }*/
-        return null;
+
+        response.setCode(200);
+        response.setMsg("");
+        response.setT(books);
+
+        return response;
     }
 
     @RequestMapping(value = "/api/goods/delete", method = RequestMethod.DELETE)
     public Response getAll(@RequestParam String id) {
         Book book = bookRepository.findById(Long.parseLong(id));
         Response response = new Response();
-        if(book!=null){
+        if (book != null) {
             bookRepository.delete(book);
             response.setCode(200);
             response.setMsg("");
             response.setT(book);
-        }else{
+        } else {
             response.setCode(201);
             response.setMsg("商品不存在");
             response.setT(null);

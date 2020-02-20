@@ -20,7 +20,6 @@ public class Orders {
     private String orderNum;
     private String orderPrice;
     private String orderSumPrice;
-    private String salePrice;
     private String creteTime;
     private String userName;
     private String phone;
@@ -85,21 +84,14 @@ public class Orders {
         this.orderSumPrice = orderSumPrice;
     }
 
-    public String getSalePrice() {
-        return salePrice;
-    }
 
     public String getImg() {
         return img;
     }
-
     public void setImg(String img) {
         this.img = img;
     }
 
-    public void setSalePrice(String salePrice) {
-        this.salePrice = salePrice;
-    }
 
     public String getCreteTime() {
         return creteTime;

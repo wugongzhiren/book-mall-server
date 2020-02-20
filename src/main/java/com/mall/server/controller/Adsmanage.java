@@ -107,13 +107,29 @@ public class Adsmanage {
         System.out.println("cmd命令为："+sb.toString());
        // Runtime runtime = Runtime.getRuntime();
         System.out.println("开始备份：bookmall");
-        Process process = Runtime.getRuntime().exec(new String[] { "cmd", "/c", "mysqldump -uroot  -ppassword bookmall > F:\\backup.sql" }); // windows
+        Process process = Runtime.getRuntime().exec(new String[] { "cmd", "/c", "mysqldump -uroot  -ppassword bookmall > D:\\backup.sql" }); // windows
         System.out.println( process.waitFor());
        // Process process = runtime.exec("cmd /c mysqldump -uroot  -ppassword bookmall > F:backup.sql");
         System.out.println("备份成功!");
         Response response = new Response();
         response.setCode(200);
-        response.setMsg("备份成功，备份数据存储在C:\\bookmall\\data\\book.sql");
+        response.setMsg("备份成功，备份数据存储在D:\\backup.sql");
+        response.setT(null);
+        return response;
+    }
+
+    @RequestMapping(value = "/api/sys/resetDb", method = RequestMethod.GET)
+    public Response resetDb() throws IOException, InterruptedException {
+
+        // Runtime runtime = Runtime.getRuntime();
+        System.out.println("开始备份：bookmall");
+        Process process = Runtime.getRuntime().exec(new String[] { "cmd", "/c", "mysql -uroot -ppassword bookmall < D:\\backup.sql" }); // windows
+        System.out.println( process.waitFor());
+        // Process process = runtime.exec("cmd /c mysqldump -uroot  -ppassword bookmall > F:backup.sql");
+        System.out.println("恢复成功!");
+        Response response = new Response();
+        response.setCode(200);
+        response.setMsg("恢复成功");
         response.setT(null);
         return response;
     }
