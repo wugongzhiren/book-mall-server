@@ -97,7 +97,6 @@ public class Adsmanage {
         if(!dbFile.exists()){
             dbFile.createNewFile();
         }
-        //mysqldump -hlocalhost -uroot -p123456 db > /home/back.sql
         StringBuffer sb = new StringBuffer();
         sb.append("mysqldump");
         sb.append(" -u"+"root");
