@@ -27,7 +27,7 @@ public class Bookmanage {
      */
     @RequestMapping(value = "/api/goods/add", method = RequestMethod.POST)
     public Response add(@RequestParam String id, @RequestParam String flag, @RequestParam String name, @RequestParam String type, @RequestParam String imgUrl, @RequestParam String description
-            , @RequestParam String stock, @RequestParam String unitPrice, @RequestParam String author, @RequestParam String publish) {
+            , @RequestParam String stock, @RequestParam String unitPrice, @RequestParam String author, @RequestParam String publish,@RequestParam String offlineUrl) {
         System.out.println("description:" + description);
         Response response = new Response();
         if (flag.equals("A")) {
@@ -46,6 +46,7 @@ public class Bookmanage {
                 book.setUnitPrice(unitPrice);
                 book.setAuthor(author);
                 book.setPublish(publish);
+                book.setOfflineUrl(offlineUrl);
                 bookRepository.save(book);
                 response.setCode(200);
                 response.setMsg("");
@@ -62,6 +63,7 @@ public class Bookmanage {
                 book1.setUnitPrice(unitPrice);
                 book1.setAuthor(author);
                 book1.setPublish(publish);
+                book1.setOfflineUrl(offlineUrl);
                 bookRepository.save(book1);
                 response.setCode(200);
                 response.setMsg("");

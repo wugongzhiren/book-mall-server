@@ -19,6 +19,7 @@ public class Book {
 
     private String author;
     private String publish;
+    private String offlineUrl;
     public long getId() {
         return id;
     }
@@ -89,5 +90,13 @@ public class Book {
 
     public void setPublish(String publish) {
         this.publish = publish;
+    }
+
+    public String getOfflineUrl() {
+        return offlineUrl;
+    }
+
+    public void setOfflineUrl(String offlineUrl) {
+        this.offlineUrl = offlineUrl;
     }
 }
